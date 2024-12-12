@@ -1,6 +1,6 @@
 package com.tlecourt.aoc;
 
-import com.tlecourt.aoc_2024.impl.Puzzle1_2;
+import com.tlecourt.aoc_2024.impl.Puzzle2_1;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -26,7 +26,7 @@ public class AppTest extends TestCase {
 		return new TestSuite(AppTest.class);
 	}
 
-	public void testPuzzle1_2() {
-		new Puzzle1_2().execute();
+	public void testPuzzle() {
+		System.out.println(new Puzzle2_1().execute());
 	}
 }

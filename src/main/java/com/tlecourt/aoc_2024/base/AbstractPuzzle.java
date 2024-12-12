@@ -17,17 +17,18 @@ public abstract class AbstractPuzzle implements Puzzle {
 	}
 
 	@Override
-	public void execute() {
+	public String execute() {
 		final String filename = String.format("/com/tlecourt/aoc_2024/input_%d", this.day);
 		try {
 			List<String> input = Files.readAllLines(Path.of(this.getClass().getResource(filename).toURI()));
-			this.solve(input);
+			return this.solve(input);
 		} catch (IOException | URISyntaxException e) {
 			System.err.println("Failed to open input file: " + e.getMessage());
 		}
+		return null;
 	}
 
-	protected abstract void solve(List<String> input);
+	protected abstract String solve(List<String> input);
 
 	public String toString() {
 		return String.format("Day %d - Number %d", this.day, this.number);

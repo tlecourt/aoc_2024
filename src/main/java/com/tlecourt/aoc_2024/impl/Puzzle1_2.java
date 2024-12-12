@@ -16,7 +16,7 @@ public class Puzzle1_2 extends AbstractPuzzle {
 	}
 
 	@Override
-	public void solve(List<String> lines) {
+	public String solve(List<String> lines) {
 		List<Integer> leftIDs = new LinkedList<>();
 
 		Map<Integer, Integer> occurrences = new HashMap<>();
@@ -39,7 +39,8 @@ public class Puzzle1_2 extends AbstractPuzzle {
 			similarityScore += locationId * occurrences.getOrDefault(locationId, 0);
 		}
 
-		System.out.println("Result: " + similarityScore);
+//		System.out.println("Result: " + similarityScore);
+		return Integer.toString(similarityScore);
 	}
 
 }

@@ -14,7 +14,7 @@ public class Puzzle1_1 extends AbstractPuzzle {
 	}
 
 	@Override
-	public void solve(List<String> lines) {
+	public String solve(List<String> lines) {
 		List<Integer> leftIDs = new LinkedList<>();
 		List<Integer> rightIDs = new LinkedList<>();
 
@@ -38,7 +38,7 @@ public class Puzzle1_1 extends AbstractPuzzle {
 			distance += Math.abs(rightIDs.get(i) - leftIDs.get(i));
 		}
 
-		System.out.println("Result: " + distance);
+		return Integer.toString(distance);
 	}
 
 }
