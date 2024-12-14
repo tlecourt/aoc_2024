@@ -1,21 +1,24 @@
 package com.tlecourt.aoc_2024.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.tlecourt.aoc_2024.base.AbstractPuzzle;
 
+/**
+ * <strong>Improvements:</strong></br>
+ * - Store direction along with position. Will make it easier to check for a
+ * loop instead of checking for 2 consecutive positions.</br>
+ * - Start checking for loop once we reach the blocking obstacle, not right from
+ * the beginning. Will make things faster as we get to later positions.</br>
+ */
 public class Puzzle6_2 extends AbstractPuzzle {
 
 	public Puzzle6_2() {
-		super(6, 1);
+		super(6, 2);
 	}
 
 	@Override
@@ -53,30 +56,37 @@ public class Puzzle6_2 extends AbstractPuzzle {
 		visitedPath.remove(new Position(startRow, startCol));
 
 		final AtomicInteger atomicRes = new AtomicInteger(0);
-		List<CompletableFuture<Boolean>> pendingTests = new ArrayList<>();
-		try (ExecutorService es = Executors.newFixedThreadPool(10, Thread.ofVirtual().factory())) {
-			for (Position pos : visitedPath) {
-				final CompletableFuture<Boolean> pendingTest = CompletableFuture
-						.supplyAsync(() -> isValidBlockingPosition(table, startRow, startCol, width, height, pos), es);
-				pendingTest.thenAccept(val -> {
-					if (val.booleanValue()) {
-						atomicRes.incrementAndGet();
-					}
-				});
-				pendingTests
-						.add(pendingTest);
-			}
-		}
+//		List<CompletableFuture<Boolean>> pendingTests = new ArrayList<>();
+//		try (ExecutorService es = Executors.newFixedThreadPool(10, Thread.ofVirtual().factory())) {
+//			for (Position pos : visitedPath) {
+//				final CompletableFuture<Boolean> pendingTest = CompletableFuture
+//						.supplyAsync(() -> isValidBlockingPosition(table, startRow, startCol, width, height, pos), es);
+//				pendingTest.thenAccept(val -> {
+//					if (val.booleanValue()) {
+//						atomicRes.incrementAndGet();
+//					}
+//				});
+//				pendingTests
+//						.add(pendingTest);
+//			}
+//		}
 
-		CompletableFuture.allOf(pendingTests.toArray(new CompletableFuture[pendingTests.size()])).join();
-
-		return Integer.toString(atomicRes.get());
-
-//		result = visitedPath.parallelStream()
-//				.filter(position -> isValidBlockingPosition(table, startRow, startCol, width, height, position))
-//				.count();
+//		CompletableFuture.allOf(pendingTests.toArray(new CompletableFuture[pendingTests.size()])).join();
 //
-//		return Long.toString(result);
+
+		visitedPath.parallelStream().forEach(position -> {
+			if (isValidBlockingPosition(table, startRow, startCol, width, height, position)) {
+				atomicRes.incrementAndGet();
+			}
+		});
+//		return Integer.toString(atomicRes.get());
+//		for (Position position : visitedPath) {
+//			if (isValidBlockingPosition(table, startRow, startCol, width, height, position)) {
+//				result++;
+//			}
+//		}
+
+		return Long.toString(result);
 	}
 
 	private Set<Position> buildVisitedPath(final char[][] table, final int startRow, final int startCol,

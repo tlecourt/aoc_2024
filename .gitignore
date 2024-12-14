@@ -2,3 +2,4 @@
 .project
 .settings/
 target/
+src/main/resources/com/tlecourt/aoc_2024/
