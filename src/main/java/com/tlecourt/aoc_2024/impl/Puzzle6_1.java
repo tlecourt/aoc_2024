@@ -77,7 +77,6 @@ public class Puzzle6_1 extends AbstractPuzzle {
 			}
 		}
 
-		// Don't forget to add the last position
 		return visitedPositions.size();
 	}
 
