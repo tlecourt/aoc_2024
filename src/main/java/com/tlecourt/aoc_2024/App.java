@@ -1,11 +1,11 @@
 package com.tlecourt.aoc_2024;
 
 import com.tlecourt.aoc_2024.base.Puzzle;
-import com.tlecourt.aoc_2024.impl.Puzzle7_2;
+import com.tlecourt.aoc_2024.impl.Puzzle8_1;
 
 public class App {
 	public static void main(String[] args) {
-		Puzzle puzzle = new Puzzle7_2();
+		Puzzle puzzle = new Puzzle8_1();
 		System.out.println("Solving puzzle for: " + puzzle);
 		String result = puzzle.execute();
 		System.out.println(result);
