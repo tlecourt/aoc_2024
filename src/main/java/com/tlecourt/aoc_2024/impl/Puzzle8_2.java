@@ -1,7 +1,6 @@
 package com.tlecourt.aoc_2024.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -10,9 +9,9 @@ import java.util.Set;
 
 import com.tlecourt.aoc_2024.base.AbstractPuzzle;
 
-public class Puzzle8_1 extends AbstractPuzzle {
+public class Puzzle8_2 extends AbstractPuzzle {
 
-	public Puzzle8_1() {
+	public Puzzle8_2() {
 		super(8, 1);
 	}
 
@@ -43,7 +42,7 @@ public class Puzzle8_1 extends AbstractPuzzle {
 		Set<Antenna> distinctAntinodes = new HashSet<>();
 		for (int i = 0; i < antennas.size() - 1; i++) {
 			for (int j = i + 1; j < antennas.size(); j++) {
-				distinctAntinodes.addAll(antennas.get(i).getAntinodes(antennas.get(j)));
+				distinctAntinodes.addAll(antennas.get(i).getAntinodes(antennas.get(j), width, height));
 			}
 		}
 
@@ -79,16 +78,35 @@ public class Puzzle8_1 extends AbstractPuzzle {
 			return frequency;
 		}
 
-		public List<Antenna> getAntinodes(Antenna other) {
+		public List<Antenna> getAntinodes(Antenna other, final int width, final int height) {
 			if (this.frequency != other.getFrequency()) {
 				return Collections.emptyList();
 			}
 
-			return Arrays.asList(
-					new Antenna(this.row + this.row - other.getRow(), this.col + this.col - other.getCol(),
-							this.frequency),
-					new Antenna(other.getRow() + other.getRow() - this.row, other.getCol() + other.getCol() - this.col,
-							this.frequency));
+			List<Antenna> antinodes = new ArrayList<>();
+
+			// Build antinodes on one side
+			int offsetRow = this.row - other.getRow();
+			int offsetCol = this.col - other.getCol();
+
+			int newRow = this.row;
+			int newCol = this.col;
+			while (newRow >= 0 && newRow < height && newCol >= 0 && newCol < width) {
+				antinodes.add(new Antenna(newRow, newCol, this.frequency));
+				newRow += offsetRow;
+				newCol += offsetCol;
+			}
+
+			newRow = other.row;
+			newCol = other.col;
+			// Reset values so we go the other way.
+			while (newRow >= 0 && newRow < height && newCol >= 0 && newCol < width) {
+				antinodes.add(new Antenna(newRow, newCol, this.frequency));
+				newRow -= offsetRow;
+				newCol -= offsetCol;
+			}
+
+			return antinodes;
 		}
 
 		public String toString() {
