@@ -30,6 +30,8 @@ public class Puzzle9_1 extends AbstractPuzzle {
 
 		List<Integer> orderedMemory = new ArrayList<>();
 
+		// I find it somewhat clever, but not readable. Checksum is computed on the go,
+		// but logic is not clear.
 		int blockPosition = 0;
 		int processedLeftFileBlocks = 0;
 		boolean isOnFile = true;
